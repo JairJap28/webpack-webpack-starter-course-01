@@ -4,13 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    'hello-world': './src/hello-world.js',
-    'super-hero': './src/super-hero.js'
-  },
+  entry: './src/index.js',
   output: {
-    // [name] references the name based on the entry
-    filename: '[name].[contenthash].js',
+    filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '',
   },
@@ -19,7 +15,8 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       // min size to split chuck
-      minSize: 3000
+      minSize: 10000,
+      automaticNameDelimiter: '_'
     }
   },
   module: {
@@ -55,22 +52,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: 'hello-world.html',
-      // chunks contains the names defined in the entry
-      // those are the sections that are going to be injected
-      chunks: ['hello-world'],
       title: 'Hello World',
       description: 'Hello World',
       template: 'src/page-template.html',
-      minify: false
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'super-hero.html',
-      chunks: ['super-hero'],
-      title: 'Super Hero',
-      description: 'Super Hero page',
-      template: 'src/page-template.html',
-      minify: false
     }),
   ],
 };

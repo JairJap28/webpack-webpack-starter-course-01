@@ -3,12 +3,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    'hello-world': './src/hello-world.js',
-    'super-hero': './src/super-hero.js'
-  },
+  entry: './src/index.js',
   output: {
-    filename: '[name].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '',
   },
@@ -53,19 +50,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: 'hello-world.html',
-      chunks: ['hello-world'],
       title: 'Hello World',
       description: 'Some description for hello world',
       template: 'src/page-template.html',
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'super-hero.html',
-      chunks: ['super-hero'],
-      title: 'Super Hero',
-      description: 'Some description for super hero',
-      template: 'src/page-template.html',
-    }),
+    })
   ],
 };
 
