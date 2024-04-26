@@ -1,22 +1,25 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '',
+  entry: {
+    "hello-world": "./src/hello-world.js",
+    "super-hero": "./src/super-hero.js",
   },
-  mode: 'development',
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "",
+  },
+  mode: "development",
   devServer: {
     port: 9000,
     static: {
-      directory: path.resolve(__dirname, 'dist'),
+      directory: path.resolve(__dirname, "dist"),
     },
     devMiddleware: {
-      index: 'index.html',
+      index: "index.html",
       writeToDisk: true,
     },
   },
@@ -24,24 +27,24 @@ module.exports = {
     rules: [
       {
         test: /\.(png|jpg)$/,
-        type: 'asset',
+        type: "asset",
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/env'],
-            plugins: ['@babel/plugin-transform-class-properties'],
+            presets: ["@babel/env"],
+            plugins: ["@babel/plugin-transform-class-properties"],
           },
         },
       },
@@ -50,10 +53,23 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Hello World',
-      description: 'Some description for hello world',
-      template: 'src/page-template.html',
-    })
+      filename: "hello-world.html",
+      // chunks contains the names defined in the entry
+      // those are the sections that are going to be injected
+      chunks: ["hello-world"],
+      title: "Hello World",
+      description: "Hello World",
+      template: "src/page-template.html",
+      minify: false,
+    }),
+    new HtmlWebpackPlugin({
+      filename: "super-hero.html",
+      chunks: ["super-hero"],
+      title: "Super Hero",
+      description: "Super Hero page",
+      template: "src/page-template.html",
+      minify: false,
+    }),
   ],
 };
 
