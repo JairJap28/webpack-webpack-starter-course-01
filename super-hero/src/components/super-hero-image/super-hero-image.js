@@ -1,5 +1,5 @@
 import superHeroImage from './super-hero.jpg';
-import './super-hero-image.css'
+import './super-hero-image.scss'
 
 class SuperHeroImage {
     render() {
