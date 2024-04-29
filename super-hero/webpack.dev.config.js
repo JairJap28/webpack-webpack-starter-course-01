@@ -1,6 +1,9 @@
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require('webpack').container;
+
+const getDomainPath = (port) =>
+  `https://webpackwebpackstartercourse01-ciaw--${port}--41fbae16.local-credentialless.webcontainer.io`;
 
 module.exports = {
   entry: "./src/super-hero.js",
@@ -50,6 +53,12 @@ module.exports = {
       template: "src/page-template.html",
       minify: false,
     }),
+    new ModuleFederationPlugin({
+      name: 'SuperHeroApp',
+      remotes: {
+        HelloWorldApp: `HelloWorldApp@${getDomainPath(9001)}/remoteEntry.js`
+      }
+    })
   ],
 };
 

@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
   entry: "./src/super-hero.js",
@@ -52,6 +53,12 @@ module.exports = {
       description: 'Super Hero page',
       template: 'src/page-template.html'
     }),
+    new ModuleFederationPlugin({
+      name: 'SuperHeroApp',
+      remotes: {
+        HelloWorldApp: `HelloWorldApp@${getDomainPath(9001)}/remoteEntry.js`
+      }
+    })
   ],
 };
 
