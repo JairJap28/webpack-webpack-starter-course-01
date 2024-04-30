@@ -1,0 +1,21 @@
+{
+  "name": "webpack-webpack-starter-course-01",
+  "version": "1.0.0",
+  "description": "Root level of the project",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm run install:dashboard & npm run install:hello-world & npm run install:super-hero & npm run install:image-caption",
+    "install:dashboard": "cd dashboard & npm install",
+    "install:hello-world": "cd hello-world & npm install",
+    "install:super-hero": "cd super-hero & npm install",
+    "install:image-caption": "cd image-caption & npm install",
+    "build": "npm run build:dashboard & npm run build:hello-world & npm run build:super-hero & npm run build:image-caption",
+    "build:dashboard": "cd dashboard & npm run build",
+    "build:hello-world": "cd hello-world & npm run build",
+    "build:super-hero": "cd hello-world & npm run build",
+    "build:image-caption": "cd hello-world & npm run build",
+    "start": "npm run install & npm run build"
+  },
+  "author": "Jair Jimenez",
+  "license": "ISC"
+}

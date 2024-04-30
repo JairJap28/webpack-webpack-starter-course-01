@@ -1,38 +1,34 @@
 const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {
-  DASHBOARD_PORT,
-  dashboardDomain,
-  helloWorldDomain,
-  superHeroDomain,
-} = require("../utils/utils");
-const { ModuleFederationPlugin } = require("webpack").container;
+const { ModuleFederationPlugin } = require('webpack').container;
+const {  IMAGE_CAPTION_PORT, imageCaptionDomain } = require('../utils/utils');
 
-const PORT = DASHBOARD_PORT;
+const PORT = IMAGE_CAPTION_PORT;
 
 module.exports = {
-  entry: "./src/dashboard.js",
+  entry: "./src/hello-world.js",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: `${dashboardDomain}`,
+    publicPath: `${imageCaptionDomain}/`,
   },
   mode: "development",
   devServer: {
     port: PORT,
-    devMiddleware: {
-      index: "dashboard.html",
-      writeToDisk: true,
+    static: {
+      directory: path.resolve(__dirname, "dist"),
     },
-    historyApiFallback: {
-      index: "dashboard.html",
+    devMiddleware: {
+      index: "image-caption.html",
+      writeToDisk: true,
     },
   },
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.js$/,
@@ -40,24 +36,29 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/env"],
+            presets: ["@babel/env"]
           },
         },
       },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: "dashboard.html",
-      title: "Dashboard",
+      filename: "image-caption.html",
+      // chunks contains the names defined in the entry
+      // those are the sections that are going to be injected
+      title: "Image Caption",
+      description: "Image Caption",
+      template: "src/page-template.html"
     }),
     new ModuleFederationPlugin({
-      name: "App",
-      remotes: {
-        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`,
-        SuperHeroApp: `SuperHeroApp@${superHeroDomain}/remoteEntry.js`,
-      },
-    }),
+      name: 'ImageCaptionApp',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './IamgeCaption': './src/components/image-caption/image-caption.js'
+      }
+    })
   ],
 };
 

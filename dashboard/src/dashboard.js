@@ -1,3 +1,18 @@
+import NavigationBar from './components/navigation-bar/navigation-bar'
+
+const navigationItems = [
+  {
+    url: '/hello-world-page',
+    title: 'Hello World Page'
+  },
+  {
+    url: '/super-hero-page',
+    title: 'Super Hero Page'
+  }
+];
+
+new NavigationBar().render(navigationItems);
+
 const url = window.location.pathname;
 
 if (url === "/hello-world-page") {
