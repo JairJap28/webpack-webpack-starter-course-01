@@ -2,10 +2,8 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { HELLO_WORLD_PORT, helloWorldDomain } = require('../utils/utils');
+const { helloWorldDomain } = require('../utils/utils');
 const { ModuleFederationPlugin } = require('webpack').container;
-
-const PORT = HELLO_WORLD_PORT;
 
 module.exports = {
   entry: "./src/hello-world.js",
