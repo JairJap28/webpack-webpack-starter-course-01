@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const fs = require("fs");
+const { helloWorldDomain } = require("../../utils/utils");
 
 app.get("/", function (req, res) {
   const pathToHtmlFile = path.resolve(__dirname, "../dist/hello-world.html");
@@ -14,5 +15,5 @@ app.get("/", function (req, res) {
 app.use("/", express.static(path.resolve(__dirname, "../dist")));
 
 app.listen(9001, function () {
-  console.log("Application is running on port :9001");
+  console.log(`Application is running on ${helloWorldDomain}`);
 });

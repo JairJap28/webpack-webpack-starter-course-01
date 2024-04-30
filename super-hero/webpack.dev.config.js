@@ -1,20 +1,20 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { SUPER_HERO_PORT, superHeroDomain, helloWorldDomain } = require("../utils/utils");
 const { ModuleFederationPlugin } = require('webpack').container;
 
-const getDomainPath = (port) =>
-  `https://webpackwebpackstartercourse01-ciaw--${port}--41fbae16.local-credentialless.webcontainer.io`;
+const PORT = SUPER_HERO_PORT;
 
 module.exports = {
   entry: "./src/super-hero.js",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "",
+    publicPath: `${superHeroDomain}`,
   },
   mode: "development",
   devServer: {
-    port: 9002,
+    port: PORT,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -55,8 +55,12 @@ module.exports = {
     }),
     new ModuleFederationPlugin({
       name: 'SuperHeroApp',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './SuperHeroPage': './src/components/super-hero-page/super-hero-page.js'
+      },
       remotes: {
-        HelloWorldApp: `HelloWorldApp@${getDomainPath(9001)}/remoteEntry.js`
+        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`
       }
     })
   ],

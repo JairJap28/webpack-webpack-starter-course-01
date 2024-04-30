@@ -1,35 +1,35 @@
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ModuleFederationPlugin } = require('webpack').container;
-const { HELLO_WORLD_PORT, helloWorldDomain } = require('../utils/utils');
+const {
+  DASHBOARD_PORT,
+  dashboardDomain,
+  helloWorldDomain,
+  superHeroDomain,
+} = require("../utils/utils");
+const { ModuleFederationPlugin } = require("webpack").container;
 
-const PORT = HELLO_WORLD_PORT;
+const PORT = DASHBOARD_PORT;
 
 module.exports = {
-  entry: "./src/hello-world.js",
+  entry: "./src/dashboard.js",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: `${helloWorldDomain}/`,
+    publicPath: `${dashboardDomain}`,
   },
   mode: "development",
   devServer: {
     port: PORT,
-    static: {
-      directory: path.resolve(__dirname, "dist"),
-    },
     devMiddleware: {
-      index: "hello-world.html",
+      index: "dashboard.html",
       writeToDisk: true,
+    },
+    historyApiFallback: {
+      index: "dashboard.html",
     },
   },
   module: {
     rules: [
-      {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -37,30 +37,23 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/env"],
-            plugins: ["@babel/plugin-transform-class-properties"],
           },
         },
       },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: "hello-world.html",
-      // chunks contains the names defined in the entry
-      // those are the sections that are going to be injected
-      title: "Hello World",
-      description: "Hello World",
-      template: "src/page-template.html"
+      filename: "dashboard.html",
+      title: "Dashboard",
     }),
     new ModuleFederationPlugin({
-      name: 'HelloWorldApp',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './HelloWorldButton': './src/components/hello-world-button/hello-world-button.js',
-        './HelloWorldPage': './src/components/hello-world-page/hello-world-page.js'
-      }
-    })
+      name: "App",
+      remotes: {
+        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`,
+        SuperHeroApp: `SuperHeroApp@${superHeroDomain}/remoteEntry.js`,
+      },
+    }),
   ],
 };
 

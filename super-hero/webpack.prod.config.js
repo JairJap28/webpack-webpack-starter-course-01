@@ -2,14 +2,17 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { SUPER_HERO_PORT, superHeroDomain, helloWorldDomain } = require('../utils/utils');
 const { ModuleFederationPlugin } = require('webpack').container;
+
+const PORT = SUPER_HERO_PORT;
 
 module.exports = {
   entry: "./src/super-hero.js",
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/static/',
+    publicPath: `${superHeroDomain}/`,
   },
   mode: 'production',
   optimization: {
@@ -55,8 +58,12 @@ module.exports = {
     }),
     new ModuleFederationPlugin({
       name: 'SuperHeroApp',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './SuperHeroPage': './src/components/super-hero-page/super-hero-page.js'
+      },
       remotes: {
-        HelloWorldApp: `HelloWorldApp@${getDomainPath(9001)}/remoteEntry.js`
+        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`
       }
     })
   ],
