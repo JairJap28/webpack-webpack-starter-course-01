@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { SUPER_HERO_PORT, superHeroDomain, helloWorldDomain } = require("../utils/utils");
+const { SUPER_HERO_PORT, superHeroDomain, helloWorldDomain, imageCaptionDomain } = require("../utils/utils");
 const { ModuleFederationPlugin } = require('webpack').container;
 
 const PORT = SUPER_HERO_PORT;
@@ -60,7 +60,8 @@ module.exports = {
         './SuperHeroPage': './src/components/super-hero-page/super-hero-page.js'
       },
       remotes: {
-        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`
+        HelloWorldApp: `HelloWorldApp@${helloWorldDomain}/remoteEntry.js`,
+        ImageCaptionApp: `ImageCaptionApp@${imageCaptionDomain}/remoteEntry.js`
       }
     })
   ],

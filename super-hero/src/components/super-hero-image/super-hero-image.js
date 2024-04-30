@@ -10,6 +10,11 @@ class SuperHeroImage {
 
         const bodyDomElement = document.querySelector('body');
         bodyDomElement.appendChild(img);
+
+        import('ImageCaptionApp/IamgeCaption').then((ImageCaptionModule) => {
+            const ImageCaption = ImageCaptionModule.default;
+            new ImageCaption().render('Super Hero - caption')
+        })
     }
 }
 
